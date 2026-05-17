@@ -1,0 +1,38 @@
+{
+	"geode": "5.7.1",
+	"gd": {
+		"win": "2.2081",
+		"android": "2.2081",
+		"mac": "2.2081",
+		"ios": "2.2081"
+	},
+	"id": "dominodev.fivefive",
+	"name": "FIVE-FIVE",
+	"version": "v1.0.0",
+	"developer": "dominodev",
+	"description": "funny kingsammelot number go brr",
+	"dependencies": {
+		"geode.node-ids": ">=v1.23.3",
+		"prevter.imageplus": ">=v1.1.0"
+	},
+
+	"resources": {
+		"files": [
+			"resources/fivefive.mp3",
+			"resources/fivefive.webp"
+		]
+	},
+
+	"settings": {
+		"onlyondeath":{
+			"type": "bool",
+			"default": false,
+			"description": "If to only do the 55 if you die at 55%",
+			"name": "Only On Death"
+		}
+	},
+
+	"tags": ["joke"]
+
+
+}
