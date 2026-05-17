@@ -32,7 +32,9 @@
 		}
 	},
 
-	"tags": ["joke"]
+	"tags": ["joke"],
+
+	"links": {"source": "https://github.com/DominoKiddoo/fivefive-gdmod"}
 
 
 }
