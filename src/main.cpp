@@ -133,14 +133,17 @@ class $modify(FiveFivePauseLayer, PauseLayer) {
 						this->schedule(schedule_selector(FiveFivePauseLayer::checkIfDone));
 
 						auto audioFile = Mod::get()->getResourcesDir() / "fivefive.mp3";
-						FMOD::Sound* sound;
-						FMOD::Channel* channel;
+						FMOD::Sound* sound = nullptr;
+						FMOD::Channel* channel = nullptr;
 						FMOD::System* system = FMODAudioEngine::sharedEngine()->m_system;
 										
 						system->createSound(geode::utils::string::pathToString(audioFile).c_str(), FMOD_DEFAULT, nullptr, &sound);
 						system->playSound(sound, nullptr, false, &m_fields->m_soundChannel);
 						m_fields->m_soundChannel->setVolume(1.0f);
-						channel->setVolume(1);
+
+						if (m_fields->m_soundChannel) { // just to make sure its not null for whatever reason
+							m_fields->m_soundChannel->setVolume(1.0f);
+						}
 					
 												
 					}

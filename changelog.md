@@ -1,3 +1,7 @@
+# 1.0.2
+- Fixed channel-related crash
+
+
 # 1.0.1
 - Migrated video/audio to pauselayer, and made it so you can still exit/resume level.
 
