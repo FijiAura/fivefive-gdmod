@@ -6,7 +6,7 @@ using namespace geode::prelude;
 #include <prevter.imageplus/include/api.hpp>
 #include <Geode/modify/PauseLayer.hpp>
 bool hasDoneThisAttempt = false;
-
+#include <fmod.hpp>
 class $modify(FiveFivePlayLayer, PlayLayer) {
 	bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects) {
 		if (!PlayLayer::init(level, useReplay, dontCreateObjects)) {
@@ -50,18 +50,17 @@ class $modify(FiveFivePlayLayer, PlayLayer) {
 			graphic->setForceLoop(false);
 			graphic->setCurrentFrame(0);
 
-			if (!OverlayManager::get()->getChildByID("fiveFiveAnim"_spr)) {
-				OverlayManager::get()->addChild(graphic);
+			if (!CCScene::get()->getChildByType<PauseLayer>(0)->getChildByID("fiveFiveAnim"_spr)) {
+				CCScene::get()->getChildByType<PauseLayer>(0)->addChild(graphic);
 				auto winSize = CCDirector::get()->getWinSize();
 				graphic->setPosition(winSize / 2);
 				graphic->setID("fiveFiveAnim"_spr);
 				graphic->play();
 				graphic->setScale(2.0f);
-				FMODAudioEngine::get()->playEffect("fivefive.mp3"_spr);
 
 			}
 			
-			
+	
 
 			hasDoneThisAttempt = true;
 		}
@@ -91,14 +90,15 @@ class $modify(FiveFivePlayLayer, PlayLayer) {
 				graphic->setForceLoop(false);
 				graphic->setCurrentFrame(0);
 
-				if (!OverlayManager::get()->getChildByID("fiveFiveAnim"_spr)) {
-					OverlayManager::get()->addChild(graphic);
+				if (!CCScene::get()->getChildByType<PauseLayer>(0)->getChildByID("fiveFiveAnim"_spr)) {
+					CCScene::get()->getChildByType<PauseLayer>(0)->addChild(graphic);
 					auto winSize = CCDirector::get()->getWinSize();
 					graphic->setPosition(winSize / 2);
 					graphic->setID("fiveFiveAnim"_spr);
 					graphic->play();
 					graphic->setScale(2.0f);
-					FMODAudioEngine::get()->playEffect("fivefive.mp3"_spr);
+
+					
 
 				}
 				
@@ -116,12 +116,39 @@ class $modify(FiveFivePlayLayer, PlayLayer) {
 };
 
 class $modify(FiveFivePauseLayer, PauseLayer) {
-
+    struct Fields {
+        FMOD::Channel* m_soundChannel = nullptr;
+		~Fields() {
+            if (m_soundChannel) {
+                m_soundChannel->stop();
+            }
+        }
+    };
 	void customSetup() {
         PauseLayer::customSetup();
+		Loader::get()->queueInMainThread([this]() {
+			if (auto scene = CCScene::get()) {
+				if (auto pauseLayer = scene->getChildByType<PauseLayer>(0)) {
+					if (pauseLayer->getChildByID("fiveFiveAnim"_spr)) {
+						this->schedule(schedule_selector(FiveFivePauseLayer::checkIfDone));
 
-        this->schedule(schedule_selector(FiveFivePauseLayer::checkIfDone));
+						auto audioFile = Mod::get()->getResourcesDir() / "fivefive.mp3";
+						FMOD::Sound* sound;
+						FMOD::Channel* channel;
+						FMOD::System* system = FMODAudioEngine::sharedEngine()->m_system;
+										
+						system->createSound(geode::utils::string::pathToString(audioFile).c_str(), FMOD_DEFAULT, nullptr, &sound);
+						system->playSound(sound, nullptr, false, &m_fields->m_soundChannel);
+						m_fields->m_soundChannel->setVolume(1.0f);
+						channel->setVolume(1);
+					
+												
+					}
+				}
+			}
+		});
     }
+
 
 
 	void onAnimFinished(CCNode* sender) {
@@ -130,8 +157,8 @@ class $modify(FiveFivePauseLayer, PauseLayer) {
     }
 
 	void checkIfDone(float dt) {
-		if (!OverlayManager::get()->getChildByID("fiveFiveAnim"_spr)) return;
-		auto graphic = static_cast<imgp::AnimatedSprite*>(OverlayManager::get()->getChildByID("fiveFiveAnim"_spr));
+		if (!CCScene::get()->getChildByType<PauseLayer>(0)->getChildByID("fiveFiveAnim"_spr)) return;
+		auto graphic = static_cast<imgp::AnimatedSprite*>(CCScene::get()->getChildByType<PauseLayer>(0)->getChildByID("fiveFiveAnim"_spr));
 		
 		if (graphic->getCurrentFrame() >= graphic->getFrameCount() - 1) {
 			this->unschedule(schedule_selector(FiveFivePauseLayer::checkIfDone));
@@ -147,15 +174,4 @@ class $modify(FiveFivePauseLayer, PauseLayer) {
 		}
 	}
 
-	void onResume(CCObject* sender) {
-		if (OverlayManager::get()->getChildByID("fiveFiveAnim"_spr)) return; // makes 100% sure you cant step the game forward a frame by clicking space >:3
-		PauseLayer::onResume(sender);
-	}
-
-	void tryQuit(CCObject* sender) {
-		if (OverlayManager::get()->getChildByID("fiveFiveAnim"_spr)) return;
-		PauseLayer::tryQuit(sender);
-		hasDoneThisAttempt = false;
-
-	}
 };
