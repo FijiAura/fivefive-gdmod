@@ -3,6 +3,9 @@
 A Mod for/dedicated to/inspired by <co>Kingsammelot</c>.  
   
 Basically whenever you get to or die at <cy>55%</c> on a level, the game will pause and play the <cy>55</c> meme.  
+
+When the game is paused to play the animation, you can still unpause the level <cy>and skip the animation</c> **after a one second cooldown**. This was added just in case you are in the middle of inputs when the animation starts.
+
   
 You can also set it so it only plays when you die at <cy>55%</c>  
 

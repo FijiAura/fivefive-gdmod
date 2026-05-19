@@ -118,6 +118,7 @@ class $modify(FiveFivePlayLayer, PlayLayer) {
 class $modify(FiveFivePauseLayer, PauseLayer) {
     struct Fields {
         FMOD::Channel* m_soundChannel = nullptr;
+		bool canUnpause = true;
 		~Fields() {
             if (m_soundChannel) {
                 m_soundChannel->stop();
@@ -131,6 +132,7 @@ class $modify(FiveFivePauseLayer, PauseLayer) {
 				if (auto pauseLayer = scene->getChildByType<PauseLayer>(0)) {
 					if (pauseLayer->getChildByID("fiveFiveAnim"_spr)) {
 						this->schedule(schedule_selector(FiveFivePauseLayer::checkIfDone));
+						m_fields->canUnpause = false;
 
 						auto audioFile = Mod::get()->getResourcesDir() / "fivefive.mp3";
 						FMOD::Sound* sound = nullptr;
@@ -144,6 +146,9 @@ class $modify(FiveFivePauseLayer, PauseLayer) {
 						if (m_fields->m_soundChannel) { // just to make sure its not null for whatever reason
 							m_fields->m_soundChannel->setVolume(1.0f);
 						}
+						this->scheduleOnce(schedule_selector(FiveFivePauseLayer::canUnpause), 1.0f);
+
+
 					
 												
 					}
@@ -175,6 +180,17 @@ class $modify(FiveFivePauseLayer, PauseLayer) {
 
 			
 		}
+	}
+
+	void canUnpause(float dt) {
+		m_fields->canUnpause = true;
+		
+		return;
+	}
+
+	void onResume(CCObject* sender) {
+		if (!m_fields->canUnpause) return;
+		PauseLayer::onResume(sender);
 	}
 
 };

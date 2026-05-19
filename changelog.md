@@ -1,3 +1,7 @@
+# 1.0.3
+- Added one second cooldown before unpausing when animation starts
+
+
 # 1.0.2
 - Fixed channel-related crash
 
