@@ -1,4 +1,7 @@
 # 1.0.3
+- Ensured logic is skipped in platformer
+
+# 1.0.3
 - Added one second cooldown before unpausing when animation starts
 
 

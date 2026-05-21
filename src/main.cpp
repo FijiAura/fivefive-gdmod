@@ -13,6 +13,8 @@ class $modify(FiveFivePlayLayer, PlayLayer) {
 			return false;
 		}
 
+
+		if (GJBaseGameLayer::get()->m_isPlatformer) return true;
 		hasDoneThisAttempt = false;
 		if (!Mod::get()->getSettingValue<bool>("onlyondeath")) {
 			this->schedule(schedule_selector(FiveFivePlayLayer::updateLogic));
