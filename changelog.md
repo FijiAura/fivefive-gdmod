@@ -1,4 +1,8 @@
-# 1.0.3
+# 1.0.5
+- Made sure video is visible even if you hide pause menu (in a mod menu like eclipse, qolmod ect)
+
+
+# 1.0.4
 - Ensured logic is skipped in platformer
 
 # 1.0.3
