@@ -9,6 +9,9 @@ bool hasDoneThisAttempt = false;
 
 #include <fmod.hpp>
 class $modify(FiveFivePlayLayer, PlayLayer) {
+
+	
+
 	bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects) {
 		if (!PlayLayer::init(level, useReplay, dontCreateObjects)) {
 			return false;
@@ -33,6 +36,11 @@ class $modify(FiveFivePlayLayer, PlayLayer) {
 
 	void updateLogic(float dt) {
 		float percent = getCurrentPercent();
+		bool onlyOnDeath = Mod::get()->getSettingValue<bool>("onlyondeath");
+
+		if (GJBaseGameLayer::get()->m_isPlatformer) return;
+		if (GJBaseGameLayer::get()->m_isTestMode && !onlyOnDeath) return;
+
 		if (percent >= 55 && !hasDoneThisAttempt) {
 			pauseGame(false);
 			

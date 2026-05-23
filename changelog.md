@@ -1,3 +1,6 @@
+# 1.0.6
+- Fixed bug with startpos switcher
+
 # 1.0.5
 - Made sure video is visible even if you hide pause menu (in a mod menu like eclipse, qolmod ect)
 
