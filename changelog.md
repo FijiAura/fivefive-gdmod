@@ -1,3 +1,7 @@
+# 1.0.8
+- Fixed practice mode bug
+
+
 # 1.0.7
 - Fixed video when unfocusing game
 - Added volume slider

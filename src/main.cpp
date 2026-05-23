@@ -40,6 +40,7 @@ class $modify(FiveFivePlayLayer, PlayLayer) {
 
 		if (GJBaseGameLayer::get()->m_isPlatformer) return;
 		if (GJBaseGameLayer::get()->m_isTestMode && !onlyOnDeath) return;
+		if (this->m_isPracticeMode && !onlyOnDeath) return;
 
 		if (percent >= 55 && !hasDoneThisAttempt) {
 			pauseGame(false);
