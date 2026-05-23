@@ -69,6 +69,8 @@ class $modify(FiveFivePlayLayer, PlayLayer) {
 				graphic->play();
 				graphic->setScale(2.0f);
 				graphic->setZOrder(99999999);
+				
+				
 
 			}
 			
@@ -155,10 +157,9 @@ class $modify(FiveFivePauseLayer, PauseLayer) {
 										
 						system->createSound(geode::utils::string::pathToString(audioFile).c_str(), FMOD_DEFAULT, nullptr, &sound);
 						system->playSound(sound, nullptr, false, &m_fields->m_soundChannel);
-						m_fields->m_soundChannel->setVolume(1.0f);
 
 						if (m_fields->m_soundChannel) { // just to make sure its not null for whatever reason
-							m_fields->m_soundChannel->setVolume(1.0f);
+							m_fields->m_soundChannel->setVolume(Mod::get()->getSettingValue<float>("volume"));
 						}
 						this->scheduleOnce(schedule_selector(FiveFivePauseLayer::canUnpause), 1.0f);
 
@@ -181,6 +182,18 @@ class $modify(FiveFivePauseLayer, PauseLayer) {
 	void checkIfDone(float dt) {
 		if (!OverlayManager::get()->getChildByID("fiveFiveAnim"_spr)) return;
 		auto graphic = static_cast<imgp::AnimatedSprite*>(OverlayManager::get()->getChildByID("fiveFiveAnim"_spr));
+
+		#ifdef GEODE_IS_WINDOWS
+		if (GetActiveWindow() == WindowFromDC(wglGetCurrentDC())) {
+			FMOD::Channel* channel = nullptr;
+			m_fields->m_soundChannel->setPaused(false);
+			graphic->play();
+		} else {
+			m_fields->m_soundChannel->setPaused(true);
+			graphic->pause();
+
+		}
+		#endif
 		if (graphic->getCurrentFrame() >= graphic->getFrameCount() - 1) {
 			this->unschedule(schedule_selector(FiveFivePauseLayer::checkIfDone));
 
@@ -189,8 +202,6 @@ class $modify(FiveFivePauseLayer, PauseLayer) {
 				CCCallFuncN::create(this, callfuncN_selector(FiveFivePauseLayer::onAnimFinished)),
 				nullptr
 			));
-
-
 			
 		}
 	}

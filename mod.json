@@ -8,7 +8,7 @@
 	},
 	"id": "dominodev.fivefive",
 	"name": "FIVE-FIVE",
-	"version": "v1.0.6",
+	"version": "v1.0.7",
 	"developer": "dominodev",
 	"description": "funny kingsammelot number go brr",
 	"dependencies": {
@@ -29,6 +29,20 @@
 			"default": false,
 			"description": "If to only do the 55 if you die at 55%",
 			"name": "Only On Death"
+		},
+
+		"volume":{
+			"type": "float",
+			"default": 1.0,
+			"max": 1.0,
+			"min": 0,
+			"control": {
+				"arrows": true,
+				"arrow-step": 0.1,
+				"slider": true,
+				"input": true
+			},
+			"name": "Volume"
 		}
 	},
 

@@ -1,3 +1,7 @@
+# 1.0.7
+- Fixed video when unfocusing game
+- Added volume slider
+
 # 1.0.6
 - Fixed bug with startpos switcher
 
