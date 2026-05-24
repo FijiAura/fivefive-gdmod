@@ -1,6 +1,8 @@
+# 1.0.9
+- Fixed bug with show trajectory
+
 # 1.0.8
 - Fixed practice mode bug
-
 
 # 1.0.7
 - Fixed video when unfocusing game

@@ -41,7 +41,7 @@ class $modify(FiveFivePlayLayer, PlayLayer) {
 		if (GJBaseGameLayer::get()->m_isPlatformer) return;
 		if (GJBaseGameLayer::get()->m_isTestMode && !onlyOnDeath) return;
 		if (this->m_isPracticeMode && !onlyOnDeath) return;
-
+		if (!m_player1) return;
 		if (percent >= 55 && !hasDoneThisAttempt) {
 			pauseGame(false);
 			
@@ -83,8 +83,12 @@ class $modify(FiveFivePlayLayer, PlayLayer) {
 
 	void destroyPlayer(PlayerObject* player, GameObject* cause) {
 		if (Mod::get()->getSettingValue<bool>("onlyondeath")) {
+			if (GJBaseGameLayer::get()->m_isPlatformer) return;
+			if (GJBaseGameLayer::get()->m_isTestMode) return;
+			if (this->m_isPracticeMode) return;
+			if (player != m_player1 && player != m_player2) return;
+
 			float percent = getCurrentPercent();
-			
 			if (percent >= 55 && percent < 56) {
 				this->scheduleOnce(schedule_selector(FiveFivePlayLayer::setUpAndAddGraphic), 0.3f);
 			}
