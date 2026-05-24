@@ -1,3 +1,6 @@
+# 1.1.0
+- Fixed bug where the video would continuously play
+
 # 1.0.91
 - Fixed bug where you would get noclip
 

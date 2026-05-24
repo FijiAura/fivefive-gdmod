@@ -41,13 +41,16 @@ class $modify(FiveFivePlayLayer, PlayLayer) {
 		if (GJBaseGameLayer::get()->m_isPlatformer) return;
 		if (GJBaseGameLayer::get()->m_isTestMode && !onlyOnDeath) return;
 		if (this->m_isPracticeMode && !onlyOnDeath) return;
-		if (!m_player1) return;
+		
 		if (percent >= 55 && !hasDoneThisAttempt) {
+			log::info("onlyondeath: {}", onlyOnDeath);
+
+			if (onlyOnDeath) return;
 			pauseGame(false);
 			
 			auto pauseLayer = CCScene::get()->getChildByType<PauseLayer>(0);
 			if (!pauseLayer) return;
-
+			if (onlyOnDeath) return;
 
 			auto plChildren = pauseLayer->getChildren();
 			for (auto child : CCArrayExt<CCNode*>(plChildren)) {
@@ -83,6 +86,11 @@ class $modify(FiveFivePlayLayer, PlayLayer) {
 
 	void destroyPlayer(PlayerObject* player, GameObject* cause) {
 		if (Mod::get()->getSettingValue<bool>("onlyondeath")) {
+			if (cause == m_anticheatSpike) {
+				PlayLayer::destroyPlayer(player, cause);
+				return;
+			}
+			log::info("runningfromdestroyplayer?");
 			if (GJBaseGameLayer::get()->m_isPlatformer) {
 				PlayLayer::destroyPlayer(player, cause);
 				return;
@@ -106,6 +114,7 @@ class $modify(FiveFivePlayLayer, PlayLayer) {
 				this->scheduleOnce(schedule_selector(FiveFivePlayLayer::setUpAndAddGraphic), 0.3f);
 			}
 		}
+		PlayLayer::destroyPlayer(player, cause);
 		
 	}
 
