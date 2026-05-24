@@ -1,3 +1,6 @@
+# 1.0.91
+- Fixed bug where you would get noclip
+
 # 1.0.9
 - Fixed bug with show trajectory
 

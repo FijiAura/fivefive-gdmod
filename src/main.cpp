@@ -83,10 +83,23 @@ class $modify(FiveFivePlayLayer, PlayLayer) {
 
 	void destroyPlayer(PlayerObject* player, GameObject* cause) {
 		if (Mod::get()->getSettingValue<bool>("onlyondeath")) {
-			if (GJBaseGameLayer::get()->m_isPlatformer) return;
-			if (GJBaseGameLayer::get()->m_isTestMode) return;
-			if (this->m_isPracticeMode) return;
-			if (player != m_player1 && player != m_player2) return;
+			if (GJBaseGameLayer::get()->m_isPlatformer) {
+				PlayLayer::destroyPlayer(player, cause);
+				return;
+			}
+
+			if (GJBaseGameLayer::get()->m_isTestMode) {
+				PlayLayer::destroyPlayer(player, cause);
+				return;
+			}
+			if (this->m_isPracticeMode) {
+				PlayLayer::destroyPlayer(player, cause);
+				return;
+			}
+			if (player != m_player1 && player != m_player2) {
+				PlayLayer::destroyPlayer(player, cause);
+				return;
+			}
 
 			float percent = getCurrentPercent();
 			if (percent >= 55 && percent < 56) {
@@ -94,7 +107,6 @@ class $modify(FiveFivePlayLayer, PlayLayer) {
 			}
 		}
 		
-		PlayLayer::destroyPlayer(player, cause);
 	}
 
 	void setUpAndAddGraphic(float dt) {
