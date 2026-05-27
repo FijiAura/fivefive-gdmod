@@ -8,7 +8,7 @@
 	},
 	"id": "dominodev.fivefive",
 	"name": "FIVE-FIVE",
-	"version": "v1.1.0",
+	"version": "v1.1.1",
 	"developer": "dominodev",
 	"description": "funny kingsammelot number go brr",
 	"dependencies": {
@@ -43,6 +43,13 @@
 				"input": true
 			},
 			"name": "Volume"
+		},
+
+		"fullscreen":{
+			"type": "bool",
+			"default": false,
+			"name": "Play Fullscreen",
+			"description": "Whether or not to play the video in full screen."
 		}
 	},
 

@@ -1,3 +1,7 @@
+# 1.1.1
+- Added option for fullscreen
+- Added button to resume level for mobile!
+
 # 1.1.0
 - Fixed bug where the video would continuously play
 

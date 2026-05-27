@@ -67,12 +67,20 @@ class $modify(FiveFivePlayLayer, PlayLayer) {
 
 			if (!OverlayManager::get()->getChildByID("fiveFiveAnim"_spr)) {
 				OverlayManager::get()->addChild(graphic);
+				addResumeButton();
 				auto winSize = CCDirector::get()->getWinSize();
 				graphic->setPosition(winSize / 2);
 				graphic->setID("fiveFiveAnim"_spr);
 				graphic->play();
-				graphic->setScale(2.0f);
-				graphic->setZOrder(99999999);
+				if (Mod::get()->getSettingValue<bool>("fullscreen")) {
+					auto contentSize = graphic->getContentSize();
+
+					graphic->setScaleX(winSize.width / contentSize.width);
+					graphic->setScaleY(winSize.height / contentSize.height);
+				} else {
+					graphic->setScale(2.0f);
+				}
+
 				
 				
 
@@ -140,15 +148,53 @@ class $modify(FiveFivePlayLayer, PlayLayer) {
 
 		if (!OverlayManager::get()->getChildByID("fiveFiveAnim"_spr)) {
 			OverlayManager::get()->addChild(graphic);
+			addResumeButton();
 			auto winSize = CCDirector::get()->getWinSize();
 			graphic->setPosition(winSize / 2);
 			graphic->setID("fiveFiveAnim"_spr);
 			graphic->play();
-			graphic->setScale(2.0f);
+			if (Mod::get()->getSettingValue<bool>("fullscreen")) {
+				auto contentSize = graphic->getContentSize();
+
+				graphic->setScaleX(winSize.width / contentSize.width);
+				graphic->setScaleY(winSize.height / contentSize.height);
+			} else {
+				graphic->setScale(2.0f);
+			}
+			
 
 			
 
 		}
+	}
+
+	void addResumeButton() {
+		auto winSize = CCDirector::get()->getWinSize();
+		auto buttonMenu = CCMenu::create();
+
+		auto buttonSprite = CCSprite::createWithSpriteFrameName("GJ_playBtn2_001.png");
+		buttonSprite->setScale(0.5);
+		auto button = CCMenuItemSpriteExtra::create(
+			buttonSprite,
+			this,
+			menu_selector(FiveFivePlayLayer::continueGame)
+		);
+
+		buttonMenu->setID("five-five-resume-menu"_spr);
+		buttonMenu->setPosition({ winSize.width / 2, 45.f });
+
+		buttonMenu->addChild(button);
+		OverlayManager::get()->addChild(buttonMenu);
+	}
+
+	void continueGame(CCObject* sender) {
+		auto scene = CCScene::get();
+		auto pauseLayer = scene->getChildByType<PauseLayer>(0);
+		Loader::get()->queueInMainThread([]() {
+			if (auto pauseLayer = CCScene::get()->getChildByType<PauseLayer>(0)) {
+				pauseLayer->onResume(nullptr);
+			}
+   		});
 	}
 };
 
@@ -164,6 +210,9 @@ class $modify(FiveFivePauseLayer, PauseLayer) {
             }
 			if (auto fiveFive = OverlayManager::get()->getChildByID("fiveFiveAnim"_spr)) {
 				fiveFive->removeFromParent();
+			}
+			if (auto resumeButton = OverlayManager::get()->getChildByID("five-five-resume-menu"_spr)) {
+				resumeButton->removeFromParent();
 			}
         }
     };
