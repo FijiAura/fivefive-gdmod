@@ -42,7 +42,7 @@ class $modify(FiveFivePlayLayer, PlayLayer) {
 		if (GJBaseGameLayer::get()->m_isTestMode && !onlyOnDeath) return;
 		if (this->m_isPracticeMode && !onlyOnDeath) return;
 		
-		if (percent >= 55 && !hasDoneThisAttempt) {
+		if (percent >= number && !hasDoneThisAttempt) {
 			log::info("onlyondeath: {}", onlyOnDeath);
 
 			if (onlyOnDeath) return;
@@ -118,7 +118,7 @@ class $modify(FiveFivePlayLayer, PlayLayer) {
 			}
 
 			float percent = getCurrentPercent();
-			if (percent >= 55 && percent < 56) {
+			if (percent >= number && percent < number + 1) {
 				this->scheduleOnce(schedule_selector(FiveFivePlayLayer::setUpAndAddGraphic), 0.3f);
 			}
 		}
