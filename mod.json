@@ -33,7 +33,7 @@
 		"number":{
 			"type": "int",
 			"default": 55,
-			"description": "The funny number you want to show the video at",
+			"description": "The funny number you want to show the video at, to make modding this mod simpler",
 			"name": "Funny Percentage"
 		},
 
